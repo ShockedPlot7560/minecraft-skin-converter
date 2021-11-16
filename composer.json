@@ -1,0 +1,13 @@
+{
+    "name": "shockedplot7560/minecraft-skin",
+    "require": {
+        "php": ">=8.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "ShockedPlot7560",
+            "email": "66992287+ShockedPlot7560@users.noreply.github.com"
+        }
+    ]
+}
