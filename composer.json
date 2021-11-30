@@ -9,5 +9,10 @@
             "name": "ShockedPlot7560",
             "email": "66992287+ShockedPlot7560@users.noreply.github.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "ShockedPlot7560\\minecraftskin\\": "src"
+        }
+    }
 }

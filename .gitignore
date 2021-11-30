@@ -1,2 +1,6 @@
 vendor/
 composer.lock
+
+example/head.png
+example/body.png
+example/skin.png
