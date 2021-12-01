@@ -3,7 +3,8 @@ It is designed to support any type of skin format, but also to be able to export
 
 ## Usage
 Declare a new Skin instance with the path to the respective image
-`̀``php
+
+```php
 $skin = new ShockedPlot7560\minecraftskin\Skin("a/path/to/file");
 ```
 Use the Exporter to export your skin as a file, or use the internal methods of the Skin class directly
