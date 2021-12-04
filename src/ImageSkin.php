@@ -50,10 +50,17 @@ class ImageSkin {
      * @return array [width, height]
      */
     public function getGridProportion(): array {
-        return [
-            (int) round($this->getWidth() / 8),
-            (int) round($this->getHeight() / 8)
-        ];
+        if ($this->getHeight() == $this->getWidth()) {
+            return [
+                (int) round($this->getWidth() / 8),
+                (int) round($this->getHeight() / 8)
+            ];
+        } else {
+            return [
+                (int) round($this->getWidth() / 8),
+                (int) round($this->getHeight() / 4)
+            ];
+        }
     }
 
     /**
