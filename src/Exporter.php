@@ -13,14 +13,15 @@ class Exporter {
     /**
      * @param Skin $image 
      * @param string $type The export type : skin / body / head
+     * @param int $scale, default is 1 => 2 will multiply by 2 the final size
      */
-    public static function exportPng(Skin $image, string $path, string $type) {
+    public static function exportPng(Skin $image, string $path, string $type, int $scale = 1) {
         switch ($type) {
             case self::HEAD_TYPE:
-                imagepng($image->getHead(), $path);
+                imagepng($image->getHead($scale), $path);
                 break;
             case self::BODY_TYPE:
-                imagepng($image->getBody(), $path);
+                imagepng($image->getBody($scale), $path);
                 break;
             case self::SKIN_TYPE:
                 imagepng($image->getSkin(), $path);
