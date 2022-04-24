@@ -15,45 +15,44 @@ use function imagecreatefromstring;
 use function imagecreatetruecolor;
 use function imagefill;
 use function imagesavealpha;
-use function imagescale;
 use function is_file;
 
 class Skin {
 
-	/**
-	 * @var string $imagePath
-	 */
-	private $imagePath;
+	/** @var ImageSkin|null $image */
+	private $image = null;
 
 	/**
-	 * @var ImageSkin|null $image
+	 * @param string|GdImage $image The image path or the image instance
 	 */
-	private $image;
-
-	/**
-	 * @param string $image The image path
-	 */
-	public function __construct(string $image) {
-		if (!is_file($image)) {
-			throw new InvalidArgumentException();
+	public function __construct(string|GdImage $image) {
+		if (!$image instanceof GdImage) {
+			$gd = @imagecreatefromstring($image);
+			if (!is_file($image) && $gd === false) {
+				throw new InvalidArgumentException();
+			} elseif (is_file($image)) {
+				$this->image = $this->generateImage($image);
+			} else {
+				$this->image = new ImageSkin($gd);
+			}
+		} else {
+			$this->image = new ImageSkin($image);
 		}
-		$this->imagePath = $image;
-		$this->image = $this->generateImage($this->imagePath);
 	}
 
-	public function getGdImage(): GdImage {
+	public function getGdImage() : GdImage {
 		return $this->getImage()->getImage();
 	}
 
-	public function getImage(): ?ImageSkin {
+	public function getImage() : ?ImageSkin {
 		return $this->image;
 	}
 
-	public function getSkin(): GdImage {
+	public function getSkin() : GdImage {
 		return $this->getGdImage();
 	}
 
-	public function getHead(int $scale = 1): GdImage {
+	public function getHead(int $scale = 1) : GdImage {
 		$image = $this->getImage();
 
 		$canva = $this->generateTransparent(8 * $scale, 8 * $scale);
@@ -86,8 +85,8 @@ class Skin {
 		);
 		$actualColor = imagecolorat($tmp, 0, 0);
 		$haveSecondLayer = false;
-		for ($x=1; $x < 7 * $scale && !$haveSecondLayer; $x++) {
-			for ($y=1; $y < 7 * $scale && !$haveSecondLayer; $y++) {
+		for ($x = 1; $x < 7 * $scale && !$haveSecondLayer; $x++) {
+			for ($y = 1; $y < 7 * $scale && !$haveSecondLayer; $y++) {
 				if (imagecolorat($tmp, $x, $y) != $actualColor) {
 					$haveSecondLayer = true;
 				}
@@ -112,7 +111,7 @@ class Skin {
 		return $canva;//, $this->getImage()->getWidth() * $scale);
 	}
 
-	public function getBody(int $scale = 1): GdImage {
+	public function getBody(int $scale = 1) : GdImage {
 		$image = $this->getImage();
 
 		$widthProportion = $image->getWidthProportion();
@@ -202,7 +201,7 @@ class Skin {
 		return $canva;
 	}
 
-	protected function generateImage(string $path): ImageSkin {
+	protected function generateImage(string $path) : ImageSkin {
 		$imageData = file_get_contents($path);
 		$image = imagecreatefromstring($imageData);
 		imagesavealpha($image, true);
@@ -215,7 +214,7 @@ class Skin {
 	/**
 	 * @return GdImage A transparent image with dimension given
 	 */
-	protected function generateTransparent(int $width, int $height): GdImage {
+	protected function generateTransparent(int $width, int $height) : GdImage {
 		$canva = imagecreatetruecolor($width, $height);
 
 		imagealphablending($canva, true);
